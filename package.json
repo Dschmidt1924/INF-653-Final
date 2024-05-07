@@ -11,11 +11,8 @@
     "type": "git",
     "url": "git+https://github.com/Dschmidt1924/INF-653-final.git"
   },
-  "author": "Justin Henley",
+  "author": "Dennis Schmidt",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Dschmidt1924/INF-653-final/issues"
-  },
   "devDependencies": {
     "nodemon": "^2.0.20"
   },

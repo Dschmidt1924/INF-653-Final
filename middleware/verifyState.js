@@ -1,4 +1,4 @@
-const statesJson = require('../public/json/states.json');
+const statesJson = require('../statesData.json');
 
 /* 
 Verifies that a valid state code has been passed as a url parameter 

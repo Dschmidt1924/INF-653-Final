@@ -1,11 +1,11 @@
 const State = require('../model/State');
-const statesJson = require('../public/json/states.json');
+const statesJson = require('../statesData.json');
 
 /*
   Returns a single random fact for the given state
   Requires: 
     - req.params.state exists and is a valid two-character uppercase state code
-    - statesJson to be defined to reference the states.json file
+    - statesJson to be defined to reference the statesData.json file
 */
 const getRandomFact = async (req, res) => {
   // Get all fun facts for the given state
@@ -36,7 +36,7 @@ const getRandomFact = async (req, res) => {
   
   Requires: 
     - req.params.state exists and is a valid two-character uppercase state code
-    - statesJson to be defined to reference the states.json file
+    - statesJson to be defined to reference the statesData.json file
     - Request body {
           "funfacts": [
               "Alabama is a state",
@@ -100,7 +100,7 @@ const createFact = async (req, res) => {
 
   Requires:
     - req.params.state exists and is a valid two-character uppercase state code
-    - statesJson to be defined to reference the states.json file
+    - statesJson to be defined to reference the statesData.json file
     - Request body {
           "index": 2,
           "funfact": "In Alabama, beds are where people sleep."
@@ -174,7 +174,7 @@ const modifyFact = async (req, res) => {
 /* Delete an existing fact entry
   Requires:
     - req.params.state exists and is a valid two-character uppercase state code
-    - statesJson to be defined to reference the states.json file
+    - statesJson to be defined to reference the statesData.json file
     - Request body: {
           "index": 2
       }
