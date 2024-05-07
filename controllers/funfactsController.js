@@ -1,4 +1,4 @@
-const State = require('../model/State');
+const State = require('../model/States');
 const statesJson = require('../statesData.json');
 
 /*
