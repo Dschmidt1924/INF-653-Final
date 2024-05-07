@@ -1,23 +1,21 @@
 {
-  "name": "states-api",
+  "name": "final-project",
   "version": "1.0.0",
-  "description": "INF 653 Final Project",
+  "description": "INF Final Project",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
     "dev": "nodemon server"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/justin-henley/States-API.git"
+    "url": "git+https://github.com/Dschmidt1924/INF-653-final.git"
   },
   "author": "Justin Henley",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/justin-henley/States-API/issues"
+    "url": "https://github.com/Dschmidt1924/INF-653-final/issues"
   },
-  "homepage": "https://github.com/justin-henley/States-API#readme",
   "devDependencies": {
     "nodemon": "^2.0.20"
   },
