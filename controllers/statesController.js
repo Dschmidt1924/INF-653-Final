@@ -1,26 +1,25 @@
 const State = require('../model/States');
 const statesJson = require('../statesData.json');
 
-// Returns all data for all states
+// Retrieve data for all states based on optional 'contig' query parameter
 const getAllStates = async (req, res) => {
-  // Create varaible to hold the json from the states file and the db
-  let stJson, dbJson;
+  let stJson, dbJson; // Holds data from JSON file and database
 
-  // Check if contig option provided
+  // Check 'contig' option to filter states
   if (req?.query?.contig == 'true') {
-    // If contig is true, filter out AK and HI
+    // Filter out AK and HI if 'contig' is true
     stJson = statesJson.filter(
       (state) => state.code !== 'AK' && state.code !== 'HI'
     );
     dbJson = await State.find();
   } else if (req?.query?.contig == 'false') {
-    // If contig is false, return only AK and HI
+    // Return only AK and HI if 'contig' is false
     stJson = statesJson.filter(
       (state) => state.code === 'AK' || state.code === 'HI'
     );
     dbJson = await State.find();
   } else {
-    // If contig not specified, return all states
+    // Return all states if 'contig' not specified
     stJson = JSON.parse(JSON.stringify(statesJson));
     dbJson = await State.find();
   }
@@ -32,64 +31,63 @@ const getAllStates = async (req, res) => {
     return res.status(204).json({ message: 'No states found.' });
   }
 
-  // Return the data as json
+  // Return the data as JSON
   res.json(states);
 };
 
-// Returns all data for a single state
+// Retrieve data for a single state
 const getState = async (req, res) => {
-  // Find the state and its fun facts
+  // Find state and its fun facts
   const state = statesJson.find((state) => state.code === req.params.state);
   const dbJson = await State.find({ statecode: req.params.state });
   const result = joinStatesWithFunFacts([state], dbJson);
 
-  // Respond with JSON
-  // joinStates function returns an array, so for a single state the first element must be returned
+  // Respond with JSON (first element for single state)
   res.json(result[0]);
 };
 
-// Returns the capital of a given state
+// Retrieve capital of a given state
 const getStateCapital = (req, res) => {
-  // Find the state and its capital
+  // Find state and its capital
   const state = statesJson.find((state) => state.code === req.params.state);
 
-  // Return only the state name and capital
+  // Return state name and capital only
   res.json({
     state: state.state,
     capital: state.capital_city,
   });
 };
 
-// Returns the nickname of a given state
+// Retrieve nickname of a given state
 const getStateNickname = (req, res) => {
-  // Find the state and its nickname
+  // Find state and its nickname
   const state = statesJson.find((state) => state.code === req.params.state);
 
-  // Return only the state name and nickname
+  // Return state name and nickname only
   res.json({
     state: state.state,
     nickname: state.nickname,
   });
 };
 
-// Returns the population of a given state
+// Retrieve population of a given state
 const getStatePopulation = (req, res) => {
-  // Find the state and its population
+  // Find state and its population
   const state = statesJson.find((state) => state.code === req.params.state);
 
-  // Return only the state name and population
+  // Return state name and population only
   res.json({
     state: state.state,
     population: state.population.toLocaleString(),
   });
 };
 
-// Returns the population of a given state
+// Retrieve admission date of a given state
 const getStateAdmission = (req, res) => {
-  // Find the state and its admission
+  // Find state and its admission date
   const state = statesJson.find((state) => state.code === req.params.state);
 
-  // Return only the state name and admission
+  // Return state name and admission date only
   res.json({
     state: state.state,
     admitted: state.admission_date,
@@ -106,24 +104,20 @@ module.exports = {
   getStateAdmission,
 };
 
-// Takes an array of json objects for states and joins them with the fun facts from the database
+// Join state data with fun facts from the database
 const joinStatesWithFunFacts = (statesJson, dbJson) => {
   return statesJson.map((stateJson) => {
-    // Get the state code
-    const stateCode = stateJson.code;
+    const stateCode = stateJson.code; // Get state code
+    let result = { ...stateJson }; // Deep copy JSON to avoid modifying cached data
 
-    // Deep copy the json to avoid adding funfacts to the stateJson in cache
-    let result = { ...stateJson };
-
-    // Find the matching fun facts in the dbJson, if any
+    // Find matching fun facts in dbJson, if any
     const facts = dbJson.find((state) => state.statecode === stateCode);
 
-    // Join the fun facts to the stateJson
+    // Add fun facts to stateJson if found
     if (facts?.funfacts?.length > 0 && facts.funfacts !== []) {
       result.funfacts = facts.funfacts;
     }
 
-    // Return the result
-    return result;
+    return result; // Return the result
   });
 };

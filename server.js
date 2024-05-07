@@ -7,30 +7,30 @@ const cors = require('cors');
 const connectDB = require('./config/dbConn');
 const PORT = process.env.PORT || 3500;
 
-// Connect to MongoDB
+// Establish MongoDB connection
 connectDB();
 
-// CORS
+// Enable Cross-Origin Resource Sharing (CORS)
 app.use(cors());
 
-// Handle url-encoded form data
+// Parse url-encoded form data
 app.use(express.urlencoded({ extended: false }));
 
-// Middleware for JSON
+// Middleware to handle JSON data
 app.use(express.json());
 
-// Serve static files
+// Serve static files from the 'public' directory
 app.use('/', express.static(path.join(__dirname, '/public')));
 
-// Routes
+// Define routes
 app.use('/', require('./routes/root'));
 app.use('/states/', require('./routes/api/states'));
 
-// Universal 404 page
+// Handle all undefined routes with a 404 response
 app.all('*', (req, res) => {
-  // Set response code
+  // Set response status to 404
   res.status(404);
-  // Send response depending on accepted file type
+  // Send appropriate response based on request format
   if (req.accepts('html')) {
     res.sendFile(path.join(__dirname, 'views', '404.html'));
   } else if (req.accepts('json')) {
@@ -40,7 +40,7 @@ app.all('*', (req, res) => {
   }
 });
 
-// Announce successful database connection in console
+// Log successful MongoDB connection and start the server
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
